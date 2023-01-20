@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001
+      author: vbelymenko
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            sequenceExists:
+              sequenceName: CLIENT_SEQ
+      changes:
+        dbms: postgres
+        endDelimiter: \nGO
+        splitStatements: false
+        sql: CREATE SEQUENCE CLIENT_SEQ
+              START WITH 1
+              INCREMENT BY 1
+              MINVALUE 1
+              MAXVALUE 9223372036854775807
+              CACHE 1;
+
+  - changeSet:
+      id: 002
+      author: vbelymenko
+      preConditions:
+        - onFail: MARK_RAN
+        - not:
+            tableExists:
+              tableName: CLIENT
+      changes:
+        dbms: postgres
+        endDelimiter: \nGO
+        splitStatements: false
+        sql: CREATE TABLE CLIENT(
+          CLIENTSERIALNUMBER BIGINT,
+          FIRSTNAME VARCHAR(20),
+          LASTNAME VARCHAR(20),
+          AGE NUMERIC,
+          EMAIL VARCHAR(20),
+          PASSWORD VARCHAR(20),
+          CONSTRAINT "CLIENT_PK" PRIMARY KEY (CLIENTSERIALNUMBER),
+          CONSTRAINT "EMAIL_UNIQUE" UNIQUE (EMAIL));
